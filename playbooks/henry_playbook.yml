@@ -1,0 +1,12 @@
+---
+ - name: Playbook to calll henryrole and illustrate the directories and uses..
+   hosts: ansible-client1
+   
+
+   vars:
+     var1: henryrole
+  
+   roles:
+       - {role: yum-update}
+       - {role: henryrole}
+     

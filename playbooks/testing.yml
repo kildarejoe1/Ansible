@@ -1,0 +1,26 @@
+---
+ - name: testing debug and variables
+   hosts: ansible-client1
+   vars:
+         test1: "Hello henry"
+   tasks:
+   - name: testing ansible variables
+     debug:
+         msg: "equals"
+     when: test1 == "Hello henry"
+   - name: register result in memory
+     shell: /usr/bin/uptime
+     register: myvar
+
+   - name: debugging usage
+     debug: var=myvar
+   
+   - name: Testing loops in Ansible
+     user:
+         name: "{{ item }}"
+         state: present
+         groups: "wheel"
+     with_items:
+         - testuser1
+         - testuser2
+         

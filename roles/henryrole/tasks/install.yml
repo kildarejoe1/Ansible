@@ -1,0 +1,9 @@
+---
+ - name: install the selinux bindings
+   yum:
+       name: libselinux-python
+       state: present
+ - name: install httpd package - use yum module to install the package
+   yum:
+       name: httpd
+       state: present

@@ -1,0 +1,8 @@
+---
+ - name: Playbook to call appd role
+   hosts: appd-clients
+   gather_facts: false
+   become: root
+   roles:
+       - {role: linux-appd}
+     

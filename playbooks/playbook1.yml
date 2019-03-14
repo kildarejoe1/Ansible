@@ -1,0 +1,16 @@
+---
+ - name: Playbook1
+   hosts: ansible-client1
+   become: yes
+ 
+   vars:
+       http_port: 8080
+   tasks:
+       - name: install Apache on node
+         yum: 
+           name: httpd
+           state: present 
+       - name: Start httpd on node
+         service: 
+           name: httpd
+           state: started

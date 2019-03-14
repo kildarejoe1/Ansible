@@ -1,0 +1,10 @@
+---
+  - name: start and enable httpd service
+    service:
+           name: httpd
+           state: restarted
+           enabled: yes
+  - name: stop the iptables service on the node
+    service:
+           name: iptables
+           state: stopped

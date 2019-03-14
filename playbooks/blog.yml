@@ -1,0 +1,86 @@
+---
+ - name: Playbook to create blog
+   hosts: blog-morrin
+ 
+   tasks:
+   - name: Task to install se-linux python bindings
+     yum:
+          name: libselinux-python
+          state: present
+
+
+   - name: Task to install httpd - webserver
+     yum:
+          name: httpd
+          state: present
+     
+   - name: Task to start httpd webserver
+     service: 
+          name: httpd
+          state: started
+          enabled: yes
+  
+   - name: Task to install Mysql server
+     yum: 
+          name: mysql-server
+          state: present
+ 
+   - name: Task to start mysql server
+     service: 
+          name: mysqld
+          state: started
+          enabled: yes
+
+   - name: Task to install PHP program
+     yum:
+          name: php
+          state: present
+
+
+   - name: Task to install PHP Mysql
+     yum:
+          name: php-mysql
+          state: present
+  
+   - name: Task to create /workpress directory on system
+     file:
+          path: /wordpress
+          state: directory
+
+
+   - name: Task to download and unpack archive to /wordpress directory
+     unarchive:
+           src: "http://wordpress.org/latest.tar.gz"
+           dest: /wordpress/
+           remote_src: yes
+
+   - name: Task to cp file to another directory
+     copy:
+           src: /wordpress/wordpress/wp-config-sample.php 
+           dest: /wordpress/wordpress/wp-config.php
+           remote_src: yes
+
+   - name: Task to allow http port into blog server
+     iptables: 
+           chain: INPUT
+           protocol: tcp
+           destination_port: 80
+           jump: ACCEPT
+     notify:
+           - reload iptables
+
+   - name: Task to install php-gd
+     yum: 
+           name: php-gd
+           state: present
+     notify:
+           - restart http
+   handlers:
+   - name: restart http
+     service:
+           name: httpd
+           state: restarted
+   - name: restart iptables
+     service:
+           name: iptables
+           stated: reload      
