@@ -1,0 +1,36 @@
+---
+# tasks file for ntp_role
+ - name: Install the ntp server to synchronise time
+   yum:
+       name: ntp
+       state: latest
+
+ - name: Start the ntpd service on the linux machine
+   service:
+       name: ntpd
+       state: started
+      
+ - name: Use Anisble iptables role to allow ntp clients to connect
+   iptables:
+       chain: INPUT
+       protocol: tcp
+       destination_port: "{{ ntp_port }}"
+       jump: ACCEPT
+   notify:
+       - reload iptables
+
+ - name: Copy over /etc/ntpd.conf template file, to configure the service as you wish
+   template:
+       src: ntpd.conf.j2
+       dest: /etc/ntpd.conf
+   notify:
+      - restart ntpd
+
+ - name: Task to check that the Service is working correctly
+   shell: ntpq -p
+   register: ntp_status
+
+
+ - debug: msg="Ntpq -p returns {{ ntp_status }}"
+
+      

@@ -1,0 +1,8 @@
+---
+ - name: Playbook to create NTP server
+   hosts: ansible-client1
+
+
+   roles:
+       - { role: Ntp_role } 
+   

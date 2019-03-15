@@ -1,2 +1,3 @@
 ---
  myvar: henry_hostvar_test
+ ntp_port: 123
